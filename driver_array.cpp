@@ -14,10 +14,65 @@ namespace sc
 
         public:
             class iterator{
+                public: //iterator traits
+                    typedef T*                              pointer;
+                    typedef std::ptrdiff_t                  diference_type;
+                    typedef T                               value_type;
+                    typedef T&                              reference;
+                    typedef std::bidirectional_iterator_tag iterator_category;
+
+                    //constructor (empty and single value)
+                    iterator(pointer ptr=nullptr) : m_ptr(ptr){
+                        /*empty*/
+                    }
+                    //destructor
+                    ~iterator() = default;
+                    //copy constructor
+                    iterator(const iterator& itr) : m_ptr(itr.m_ptr){
+                        /*empty*/
+                    }
+                    /// Assign operator
+                    iterator& operator=(const iterator& rhs){
+                        m_ptr = rhs.m_ptr;
+                    }
+
+                    reference operator *(void) const{
+                       return *m_ptr;
+                    }
+                    // ++it
+                    iterator operator++(){
+                        return ++m_ptr;
+                    }
+                    // it++
+                    iterator operator++(int){
+                        auto temp(*this);
+                        ++m_ptr;
+                        return temp;
+                    }
+                    // --it
+                    iterator operator--(){
+                        return --m_ptr;
+                    }
+                    // it--
+                    iterator operator--(int){
+                        auto temp(*this);
+                        --m_ptr;
+                        return temp;
+                    }
+
+                   bool operator==(const iterator& rhs) const{
+                    return m_ptr == rhs.m_ptr;
+                   }
+                   bool operator!=(const iterator& rhs) const{
+                    return m_ptr != rhs.m_ptr;
+                   }
+
+                private:
+                    pointer m_ptr;
 
             };
             class const_iterator{
-
+                private:
             };
 
             //basic constructor
@@ -40,7 +95,12 @@ namespace sc
                 std::copy(il.begin(), il.end(), &m_data[0]);
                 m_size = il.size();
             }
-
+            iterator begin(void){
+                return iterator(&m_data[0]);
+            }
+            iterator end(void){
+                return iterator(&m_data[m_size]);
+            }
             //escrever e ler index do vetor 
             reference operator[](size_type pos){
                 return m_data[pos];
@@ -101,9 +161,9 @@ int main( void ){
     }catch(std::out_of_range & ex){
         std::cout << ex.what() << "\n";
     }
-
-    std::cout << a << std::endl;
-    std::cout << b << std::endl;
+    for(auto it = a.begin(); it!=a.end(); it++){
+        std::cout << *it << "\n";
+    }
 
     return 0;
 }
