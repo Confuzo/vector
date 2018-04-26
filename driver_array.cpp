@@ -7,10 +7,10 @@ namespace sc
     class array
     {
         //=== Alias
-        typedef int value_type;
+        typedef T value_type;
         typedef size_t size_type;
-        typedef int* pointer;
-        typedef int& reference;
+        typedef T* pointer;
+        typedef T& reference;
 
         public:
             class iterator{
@@ -135,16 +135,6 @@ namespace sc
 
     };
 }
-//template <typename T, size_t SIZE>
-/*void print( const sc::array<T, SIZE>& a){
-    std::cout << "[ ";
-   // for ( sc::array::iterator it = a.begin() ; it != a.end() ; ++it )
-        //std::cout << *it << " "; 
-     for ( auto i(0u) ; i < a.m_size ; ++i )
-        std::cout << a.m_data[i] << " ,";
-       
-    std::cout << " ]\n";
-}*/
 
 int main( void ){
     //sc::array a(4); // Construtor com 1 argumento.
