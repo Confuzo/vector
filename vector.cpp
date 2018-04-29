@@ -173,9 +173,49 @@ namespace sc{
 					clear();
 					m_size = new_cap;
 					std::memmove(m_data, new_vector, new_cap*sizeof(T));
-					//std::cout << new_vector.capacity() << "\n";
-					//m_data = new_vector;
 				}
+			}
+
+			void push_front(const T & value){
+				auto i = m_size+1;
+				reserve(i);
+				value_type new_vector[m_size];
+				std::memmove(new_vector, m_data, m_size*sizeof(T));
+				clear();
+				m_size = i;
+				m_data[0] = value;
+				std::memmove(&m_data[1], new_vector, m_size*sizeof(T));
+			}
+
+			void push_back(const T & value){
+				auto i = m_size+1;
+				reserve(i);
+				value_type new_vector[m_size];
+				std::memmove(new_vector, m_data, m_size*sizeof(T));
+				clear();
+				m_size = i;
+				std::memmove(m_data, new_vector, m_size*sizeof(T));
+				m_data[i-1] = value;
+			}
+
+			void pop_back(){
+				//m_data[m_size-1].~T();
+				m_size--;
+			}
+
+			void pop_front(){
+				value_type new_vector [m_size];
+				std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
+				m_size--;
+				std::memmove(m_data, new_vector, m_size*sizeof(T));
+			}
+
+			const T & back() const {
+				return m_data[m_size-1];
+			}
+
+			const T & front() const {
+				return m_data[0];
 			}
 
 			bool operator==(const vector<T, SIZE>& rhs){
@@ -200,6 +240,14 @@ namespace sc{
 			iterator end(void){
 					return iterator(&m_data[m_size]);
 			}
+
+			const_iterator cbegin(void) {
+				return const_iterator(&m_data[0]);
+			}
+
+			const_iterator cend(void){
+				return const_iterator(&m_data[m_size]);
+			}
 		};
 }
 int main(){
@@ -208,10 +256,18 @@ int main(){
 
 
 	std::cout << a.capacity() << std::endl;
-	a.reserve(6);
+	a.push_back('l');
 	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
+	a.pop_front();
+	for(auto it = a.begin(); it!=a.end(); it++){
+			std::cout << *it << "\n";
+	}
+	std::cout << "\n";
+	std::cout << a.capacity() << std::endl;
+	std::cout<< a.back() << std::endl;
+	std::cout<< a.front() << std::endl;
 	//std::cout << a.capacity() << std::endl;
 	/*for(auto it = b.begin(); it!=b.end(); it++){
 			std::cout << *it << "\n";
