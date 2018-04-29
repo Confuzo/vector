@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <initializer_list>
+#include <cstring>
 
 namespace sc{
 	template <typename T, size_t SIZE=0>
@@ -157,7 +158,24 @@ namespace sc{
 			}
 
 			void clear() {
-				
+				size_type i;
+				for(i = 0; i < m_size; i++){
+					m_data[i].~T();
+				}
+
+				m_size = 0;
+			}
+
+			void reserve (size_type new_cap) {
+				if(new_cap > capacity()){
+					value_type new_vector[new_cap];
+					std::memmove(new_vector, m_data, new_cap*sizeof(T));
+					clear();
+					m_size = new_cap;
+					std::memmove(m_data, new_vector, new_cap*sizeof(T));
+					//std::cout << new_vector.capacity() << "\n";
+					//m_data = new_vector;
+				}
 			}
 
 			bool operator==(const vector<T, SIZE>& rhs){
@@ -187,13 +205,14 @@ namespace sc{
 int main(){
 	sc::vector<char, 3> a = {'c', 's','a','b'};
 	sc::vector<char> b (a.begin(),a.end());
+
+
+	std::cout << a.capacity() << std::endl;
+	a.reserve(6);
 	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
-
-	std::cout << a.capacity();
-	a.clear();
-	//std::cout << a.capacity();
+	//std::cout << a.capacity() << std::endl;
 	/*for(auto it = b.begin(); it!=b.end(); it++){
 			std::cout << *it << "\n";
 	}*/
