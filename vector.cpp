@@ -18,6 +18,7 @@ namespace sc{
 			pointer m_capacity;*/
 			size_type m_size; //!< Stores the array size.
       value_type m_data[ SIZE ]; //the storage area
+			size_type m_capacity;
 			/*
 				.reserve()
 					0) ver se o tamanho alocado comporta os novos elementos
@@ -176,6 +177,12 @@ namespace sc{
 				}
 			}
 
+			void shrink_to_fit(){
+				if(m_capacity > m_size){
+					m_capacity = m_size;
+				}
+			}
+
 			void push_front(const T & value){
 				auto i = m_size+1;
 				reserve(i);
@@ -200,14 +207,18 @@ namespace sc{
 
 			void pop_back(){
 				//m_data[m_size-1].~T();
-				m_size--;
+				if(m_size-1 >= 0){
+						m_size--;
+				}
 			}
 
 			void pop_front(){
-				value_type new_vector [m_size];
-				std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
-				m_size--;
-				std::memmove(m_data, new_vector, m_size*sizeof(T));
+				if(m_size-1 >= 0){
+					value_type new_vector [m_size];
+					std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
+					m_size--;
+					std::memmove(m_data, new_vector, m_size*sizeof(T));
+				}
 			}
 
 			const T & back() const {
@@ -230,7 +241,8 @@ namespace sc{
 					return std::equal(&rhs.m_data[0], &rhs.m_data[m_size], &m_data[0]);
 			}
 
-			size_type capacity( void ) const{
+			size_type capacity( void ){
+				m_capacity = (size_type) std::distance(&m_data[0], &m_data[m_size]);
 				return std::distance(&m_data[0],&m_data[m_size]);
 			}
 
@@ -260,6 +272,7 @@ int main(){
 	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
+	std::cout << a.capacity() << "\n";
 	a.pop_front();
 	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
@@ -268,6 +281,8 @@ int main(){
 	std::cout << a.capacity() << std::endl;
 	std::cout<< a.back() << std::endl;
 	std::cout<< a.front() << std::endl;
+	std::cout<< a.back() << std::endl;
+
 	//std::cout << a.capacity() << std::endl;
 	/*for(auto it = b.begin(); it!=b.end(); it++){
 			std::cout << *it << "\n";
