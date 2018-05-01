@@ -13,21 +13,8 @@ namespace sc{
         typedef T& reference;
 
 		private:
-			/*pointer m_data;
-			pointer m_size;
-			pointer m_capacity;*/
 			size_type m_size; //!< Stores the array size.
-      value_type m_data[ SIZE ]; //the storage area
-			size_type m_capacity;
-			/*
-				.reserve()
-					0) ver se o tamanho alocado comporta os novos elementos
-					1) alocar nova memoria c/ o dobro da original (*temp)
-					2) copiar m.data p/ temp
-					3) apagar m_data
-					4) m_data = temp;
-					5) m_size *= 2;
-			*/
+      		value_type m_data[ SIZE ]; //the storage area
 		public:
 			class iterator{
 					public: //iterator traits
@@ -88,7 +75,61 @@ namespace sc{
 
 			};
 			class const_iterator{
-					private:
+					public:
+						typedef const T*                              pointer;
+						typedef const std::ptrdiff_t                  diference_type;
+						typedef const T                               value_type;
+						typedef const T&                              reference;
+						typedef const std::bidirectional_iterator_tag iterator_category;
+
+						//constructor (empty and single value)
+						const_iterator(pointer ptr=nullptr) : m_ptr(ptr){
+								/*empty*/
+						}
+						//destructor
+						~const_iterator() = default;
+						//copy constructor
+						const_iterator(const const_iterator& itr) : m_ptr(itr.m_ptr){
+								/*empty*/
+						}
+						/// Assign operator
+						const_iterator& operator=(const const_iterator& rhs){
+								m_ptr = rhs.m_ptr;
+						}
+
+						reference operator *(void) const{
+								return *m_ptr;
+						}
+						// ++it
+						const_iterator operator++(){
+								return ++m_ptr;
+						}
+						// it++
+						const_iterator operator++(int){
+								auto temp(*this);
+								++m_ptr;
+								return temp;
+						}
+						// --it
+						const_iterator operator--(){
+								return --m_ptr;
+						}
+						// it--
+						const_iterator operator--(int){
+								auto temp(*this);
+								--m_ptr;
+								return temp;
+						}
+
+						bool operator==(const const_iterator& rhs) const{
+						return m_ptr == rhs.m_ptr;
+						}
+						bool operator!=(const const_iterator& rhs) const{
+						return m_ptr != rhs.m_ptr;
+						}
+
+					private: pointer m_ptr;
+
 			};
 			//CONSTRUTORES E DESTRUTORES
 			/*Parâmetros
@@ -120,13 +161,12 @@ namespace sc{
 			//5- Constrói a lista com o conteúdo da lista inicializadora init.
 			vector(const std::initializer_list<T> il ){
 				std::copy(il.begin(), il.end(), &m_data[0]);
-        m_size = il.size();
+       			m_size = il.size();
 			}
 			//6- Destrói a lista. Os destruidores dos elementos são chamados e o armazenamento usado é desalocado.
 			//Note que se os elementos forem ponteiros, os objetos apontados não serão destruídos
-			~vector(void){
-				//delete [] m_data;
-			}
+			~vector(void) = default;
+
 			/*7- Copiar operador de atribuição. Substitui o conteúdo por uma cópia do conteúdo de outro. (isto é
 			os dados em outro são movidos de outro para este contêiner). outro está em um válido, mas
 			estado não especificado depois*/
@@ -137,12 +177,12 @@ namespace sc{
 			//8- Substitui o conteúdo por aqueles identificados pela lista de inicializadores ilist.
 			vector& operator=( std::initializer_list<T> ilist ){
 				std::copy(ilist.begin(), ilist.end(), &m_data[0]);
-        m_size = ilist.size();
+        		m_size = ilist.size();
 			}
 
 			reference operator[](size_type pos){
-          return m_data[pos];
-      }
+          		return m_data[pos];
+      		}
 
 			reference at(size_type pos){
 					if( pos < 0 or pos >= m_size)
@@ -177,12 +217,6 @@ namespace sc{
 				}
 			}
 
-			void shrink_to_fit(){
-				if(m_capacity > m_size){
-					m_capacity = m_size;
-				}
-			}
-
 			void push_front(const T & value){
 				auto i = m_size+1;
 				reserve(i);
@@ -207,18 +241,14 @@ namespace sc{
 
 			void pop_back(){
 				//m_data[m_size-1].~T();
-				if(m_size-1 >= 0){
-						m_size--;
-				}
+				m_size--;
 			}
 
 			void pop_front(){
-				if(m_size-1 >= 0){
-					value_type new_vector [m_size];
-					std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
-					m_size--;
-					std::memmove(m_data, new_vector, m_size*sizeof(T));
-				}
+				value_type new_vector [m_size];
+				std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
+				m_size--;
+				std::memmove(m_data, new_vector, m_size*sizeof(T));
 			}
 
 			const T & back() const {
@@ -241,8 +271,7 @@ namespace sc{
 					return std::equal(&rhs.m_data[0], &rhs.m_data[m_size], &m_data[0]);
 			}
 
-			size_type capacity( void ){
-				m_capacity = (size_type) std::distance(&m_data[0], &m_data[m_size]);
+			size_type capacity( void ) const{
 				return std::distance(&m_data[0],&m_data[m_size]);
 			}
 
@@ -253,34 +282,48 @@ namespace sc{
 					return iterator(&m_data[m_size]);
 			}
 
-			const_iterator cbegin(void) {
+			const_iterator cbegin(void) const{
 				return const_iterator(&m_data[0]);
 			}
 
-			const_iterator cend(void){
+			const_iterator cend(void) const{
 				return const_iterator(&m_data[m_size]);
 			}
-
-			iterator insert (iterator pos , const T & value){
-
-				std::cout << &pos << std::endl;
-				++pos;
-				std::cout << &pos << std::endl;
+			iterator insert(iterator pos, const T& value){
+				iterator aux = begin();
+				size_type index = std::distance(&aux, &pos);
+				m_data[index] = value;
+				return iterator(&m_data[index]);
 			}
 		};
 }
 int main(){
-	sc::vector<char, 3> a = {'c', 's','a','b'};
+	sc::vector<char> a = {'c', 's','a','b'};
 	sc::vector<char> b (a.begin(),a.end());
 
+	sc::vector<char>::iterator it = a.begin();
+	sc::vector<char>::const_iterator cit = a.cbegin();
+	//*it = 'b';
+	//*cit = 'g';
+
+	std::cout << &it <<"\n";
+
+	it = a.insert(it, 'v');
+
+	std::cout << &it <<"\n";
+
+	auto i = std::distance(&it, &it);
+	std::cout << i <<"\n";
 
 	std::cout << a.capacity() << std::endl;
 	a.push_back('l');
-	for(auto it = a.begin(); it!=a.end(); it++){
-			std::cout << *it << "\n";
+
+	for(;cit!=a.cend(); cit++){
+			std::cout << *cit << "\n";
 	}
-	std::cout << a.capacity() << "\n";
+
 	a.pop_front();
+	std::cout << "----------------------\n";
 	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
