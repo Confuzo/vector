@@ -260,6 +260,13 @@ namespace sc{
 			const_iterator cend(void){
 				return const_iterator(&m_data[m_size]);
 			}
+
+			iterator insert (iterator pos , const T & value){
+
+				std::cout << &pos << std::endl;
+				++pos;
+				std::cout << &pos << std::endl;
+			}
 		};
 }
 int main(){
@@ -279,10 +286,12 @@ int main(){
 	}
 	std::cout << "\n";
 	std::cout << a.capacity() << std::endl;
-	std::cout<< a.back() << std::endl;
-	std::cout<< a.front() << std::endl;
-	std::cout<< a.back() << std::endl;
-
+	auto it = a.begin();
+	a.insert(it, 'd');
+	std::cout << "\n";
+	for(auto it = a.begin(); it!=a.end(); it++){
+			std::cout << *it << "\n";
+	}
 	//std::cout << a.capacity() << std::endl;
 	/*for(auto it = b.begin(); it!=b.end(); it++){
 			std::cout << *it << "\n";
