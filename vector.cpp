@@ -290,10 +290,37 @@ namespace sc{
 				return const_iterator(&m_data[m_size]);
 			}
 			iterator insert(iterator pos, const T& value){
+				auto i = m_size+1;
+				reserve(i);
 				iterator aux = begin();
-				size_type index = std::distance(&aux, &pos);
-				m_data[index] = value;
-				return iterator(&m_data[index]);
+				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
+				value_type new_vector [m_size];
+				std::memmove(new_vector, m_data, m_size*sizeof(T));
+				if(index < m_size){
+					m_data[index] = value;
+				}
+				std::memmove(&m_data[index+1], new_vector, m_size*sizeof(T));
+
+				return pos;
+			}
+
+			template <typename InItr>
+			iterator insert(iterator pos, InItr first, InItr last){
+			}
+
+			iterator insert(iterator pos, std::initializer_list<T> ilist){
+				auto i = m_size + ilist.size();
+				reserve(i);
+				iterator aux = begin();
+				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-2*sizeof(T);
+				value_type new_vector [m_size];
+				std::memmove(new_vector, m_data, m_size*sizeof(T));
+				if(index < m_size){
+					std::copy(ilist.begin(), ilist.end(), &m_data[index]);
+				}
+				std::memmove(&m_data[index+ilist.size()], new_vector, m_size*sizeof(T));
+
+				return pos;
 			}
 		};
 }
@@ -308,30 +335,14 @@ int main(){
 
 	std::cout << &it <<"\n";
 
-	it = a.insert(it, 'v');
+	a.insert(it, {'d','u','l'});
 
 	std::cout << &it <<"\n";
 
-	auto i = std::distance(&it, &it);
-	std::cout << i <<"\n";
-
-	std::cout << a.capacity() << std::endl;
-	a.push_back('l');
-
-	for(;cit!=a.cend(); cit++){
-			std::cout << *cit << "\n";
-	}
-
-	a.pop_front();
 	std::cout << "----------------------\n";
-	for(auto it = a.begin(); it!=a.end(); it++){
-			std::cout << *it << "\n";
-	}
-	std::cout << "\n";
+
 	std::cout << a.capacity() << std::endl;
-	auto it = a.begin();
-	a.insert(it, 'd');
-	std::cout << "\n";
+
 	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
