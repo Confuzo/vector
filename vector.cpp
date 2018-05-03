@@ -151,8 +151,14 @@ namespace sc{
 			//3- Constrói a lista com o conteúdo do intervalo [first, last].
 			template< typename InputIt >
 			vector( InputIt first, InputIt last ){
-					//dificuldades em implementar
-					
+				int i = 0;
+				m_size = 0;
+				while(first != last){
+					m_data[i] = *first;
+					i++;
+					m_size++;
+					first++;
+				}
 			}
 			//4- Construtor de cópia. Constrói a lista com a cópia profunda do conteúdo de outra.
 			vector(const vector& other ){
@@ -303,7 +309,7 @@ namespace sc{
 				iterator aux = begin();
 				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
 				value_type new_vector [m_size];
-				std::memmove(new_vector, m_data, m_size*sizeof(T));
+				std::memmove(new_vector, &m_data[index], m_size*sizeof(T));
 				if(index < m_size){
 					m_data[index] = value;
 				}
@@ -314,13 +320,32 @@ namespace sc{
 
 			template <typename InItr>
 			iterator insert(iterator pos, InItr first, InItr last){
+				size_type i = 0;
+				auto ini(first);
+				while(ini != last){
+					i++;
+					ini++;
+				}
+				auto new_cap = i + m_size;
+				reserve(new_cap);
+				iterator aux = begin();
+				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
+				value_type new_vector [m_size];
+				std::memmove(new_vector, &m_data[index], m_size*sizeof(T));
+				while(first != last){
+					m_data[index] = *first;
+					index++;
+					first++;
+				}
+				std::memmove(&m_data[index], new_vector, m_size*sizeof(T));
+
 			}
 
 			iterator insert(iterator pos, std::initializer_list<T> ilist){
 				auto i = m_size + ilist.size();
 				reserve(i);
 				iterator aux = begin();
-				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-2*sizeof(T);
+				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
 				value_type new_vector [m_size];
 				std::memmove(new_vector, m_data, m_size*sizeof(T));
 				if(index < m_size){
@@ -333,7 +358,7 @@ namespace sc{
 
 			iterator erase(iterator pos){
 				iterator aux = begin();
-				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-2*sizeof(T);
+				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
 				value_type new_vector [m_size];
 				std::memmove(new_vector, &m_data[index+1], m_size*sizeof(T));
 				std::memmove(&m_data[index], new_vector, m_size*sizeof(T));
@@ -366,6 +391,17 @@ namespace sc{
 				m_size = count;
 			}
 
+			template <typename InItr>
+			void assign(InItr first, InItr last){
+				auto ini = 0;
+				while(first != last){
+					m_data[ini] = *first;
+					first++;
+					ini++;
+				}
+				m_size = ini;
+			}
+
 			void assign(std::initializer_list<T> ilist){
 				std::copy(ilist.begin(), ilist.end(), &m_data[0]);
 				m_size = ilist.size();
@@ -374,43 +410,43 @@ namespace sc{
 }
 int main(){
 	sc::vector<char> a = {'c', 's','a','b'};
-	sc::vector<char> b (a.begin(),a.end());
+	sc::vector<char> b {'u','l'};
 	sc::vector<char> c;
-	c.assign(7,'l');
+//	c.assign(7,'l');
 
 	sc::vector<char>::iterator it = a.begin();
 	//sc::vector<char>::iterator cit = a.cbegin();
 	//*it = 'b';
-<<<<<<< HEAD
-	//*cit = 'g';	
-	a.insert(it, {'d','u','l'});
-	//a.insert(++it, 'h');
-=======
 	//*cit = 'g';
-
+	a.insert(it, b.begin(), b.end());
+	c.assign(a.begin(),a.end());
+	//a.insert(++it, 'h');
+	//*cit = 'g';
+/*
 	std::cout << &it <<"\n";
 
-	a.insert(it, 'h');
-
 	std::cout << &it <<"\n";
->>>>>>> b13c73ba2aeadc6f5d97437dd8caaa12d9b94020
 
 	std::cout << "----------------------\n";
 	std::cout << a.capacity() << std::endl;
 	std::cout << "----------------------\n";
-
-	for(; it!=a.end(); it++){
-			std::cout << *it << "\n";
-	}
-	a.erase(a.begin(), a.end());
+*/
 	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
+
+		for(auto it = c.begin(); it!=c.end(); it++){
+				std::cout << *it << "\n";
+		}
+	/*
+	a.erase(a.begin(), a.end());
+	std::cout << a.capacity() << "\n";
 	for(auto it = c.begin(); it!=c.end(); it++){
 			std::cout << *it << "\n";
-	}
+	}*/
+
 	//std::cout << a.capacity() << std::endl;
-	/*for(auto it = b.begin(); it!=b.end(); it++){
+	/*for(auto it = b.begin(); it != b.end(); it++){
 			std::cout << *it << "\n";
 	}*/
 	return 0;
