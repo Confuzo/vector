@@ -358,11 +358,25 @@ namespace sc{
 				std::memmove(m_data,new_vector, m_size*sizeof(T));
 				return first;
 			}
+
+			void assign(size_type count, const T & value){
+				for (size_type i = 0; i< count; i++){
+					m_data[i] = value;
+				}
+				m_size = count;
+			}
+
+			void assign(std::initializer_list<T> ilist){
+				std::copy(ilist.begin(), ilist.end(), &m_data[0]);
+				m_size = ilist.size();
+			}
 		};
 }
 int main(){
 	sc::vector<char> a = {'c', 's','a','b'};
 	sc::vector<char> b (a.begin(),a.end());
+	sc::vector<char> c;
+	c.assign(7,'l');
 
 	sc::vector<char>::iterator it = a.begin();
 	//sc::vector<char>::iterator cit = a.cbegin();
@@ -384,6 +398,9 @@ int main(){
 	}
 	a.erase(a.begin(), a.end());
 	for(auto it = a.begin(); it!=a.end(); it++){
+			std::cout << *it << "\n";
+	}
+	for(auto it = c.begin(); it!=c.end(); it++){
 			std::cout << *it << "\n";
 	}
 	//std::cout << a.capacity() << std::endl;
