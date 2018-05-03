@@ -49,8 +49,8 @@ namespace sc{
 							}
 							// it++
 							iterator operator++(int){
-									auto temp(*this);
 									++m_ptr;
+									auto temp(*this);
 									return temp;
 							}
 							// --it
@@ -152,7 +152,7 @@ namespace sc{
 			template< typename InputIt >
 			vector( InputIt first, InputIt last ){
 					//dificuldades em implementar
-
+					
 			}
 			//4- Construtor de cópia. Constrói a lista com a cópia profunda do conteúdo de outra.
 			vector(const vector& other ){
@@ -381,6 +381,11 @@ int main(){
 	sc::vector<char>::iterator it = a.begin();
 	//sc::vector<char>::iterator cit = a.cbegin();
 	//*it = 'b';
+<<<<<<< HEAD
+	//*cit = 'g';	
+	a.insert(it, {'d','u','l'});
+	//a.insert(++it, 'h');
+=======
 	//*cit = 'g';
 
 	std::cout << &it <<"\n";
@@ -388,12 +393,13 @@ int main(){
 	a.insert(it, 'h');
 
 	std::cout << &it <<"\n";
+>>>>>>> b13c73ba2aeadc6f5d97437dd8caaa12d9b94020
 
 	std::cout << "----------------------\n";
-
 	std::cout << a.capacity() << std::endl;
+	std::cout << "----------------------\n";
 
-	for(auto it = a.begin(); it!=a.end(); it++){
+	for(; it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
 	a.erase(a.begin(), a.end());
