@@ -15,6 +15,7 @@ namespace sc{
 		private:
 			size_type m_size; //!< Stores the array size.
       		value_type m_data[ SIZE ]; //the storage area
+					size_type m_capacity;
 		public:
 			class iterator{
 					public: //iterator traits
@@ -207,12 +208,19 @@ namespace sc{
 				m_size = 0;
 			}
 
+			void shrink_to_fit(){
+				if(m_capacity > m_size){
+					m_capacity = m_size;
+				}
+			}
+
 			void reserve (size_type new_cap) {
 				if(new_cap > capacity()){
 					value_type new_vector[new_cap];
 					std::memmove(new_vector, m_data, new_cap*sizeof(T));
 					clear();
 					m_size = new_cap;
+					m_capacity = m_size;
 					std::memmove(m_data, new_vector, new_cap*sizeof(T));
 				}
 			}
@@ -322,6 +330,34 @@ namespace sc{
 
 				return pos;
 			}
+
+			iterator erase(iterator pos){
+				iterator aux = begin();
+				auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-2*sizeof(T);
+				value_type new_vector [m_size];
+				std::memmove(new_vector, &m_data[index+1], m_size*sizeof(T));
+				std::memmove(&m_data[index], new_vector, m_size*sizeof(T));
+				m_size--;
+				return aux;
+			}
+
+			iterator erase(iterator first, iterator last){
+				value_type new_vector [m_size];
+				auto i = 0;
+				auto j = 0;
+				while(first != last){
+					if(m_data[i] != *first){
+						new_vector[j] = m_data[i];
+						j++;
+					}else{
+						m_size--;
+					}
+					i++;
+					first++;
+				}
+				std::memmove(m_data,new_vector, m_size*sizeof(T));
+				return first;
+			}
 		};
 }
 int main(){
@@ -329,17 +365,31 @@ int main(){
 	sc::vector<char> b (a.begin(),a.end());
 
 	sc::vector<char>::iterator it = a.begin();
-	sc::vector<char>::const_iterator cit = a.cbegin();
+	//sc::vector<char>::iterator cit = a.cbegin();
 	//*it = 'b';
+<<<<<<< HEAD
 	//*cit = 'g';	
 	a.insert(it, {'d','u','l'});
 	//a.insert(++it, 'h');
+=======
+	//*cit = 'g';
+
+	std::cout << &it <<"\n";
+
+	a.insert(it, 'h');
+
+	std::cout << &it <<"\n";
+>>>>>>> b13c73ba2aeadc6f5d97437dd8caaa12d9b94020
 
 	std::cout << "----------------------\n";
 	std::cout << a.capacity() << std::endl;
 	std::cout << "----------------------\n";
 
 	for(; it!=a.end(); it++){
+			std::cout << *it << "\n";
+	}
+	a.erase(a.begin(), a.end());
+	for(auto it = a.begin(); it!=a.end(); it++){
 			std::cout << *it << "\n";
 	}
 	//std::cout << a.capacity() << std::endl;
