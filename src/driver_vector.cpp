@@ -1,14 +1,17 @@
-#include "vector.h"
+#include "../include/vector.h"
 int main(){
 	sc::vector<char> a = {'c', 's','a','b'};
-	sc::vector<char> b (a.begin(),a.end());
+	//sc::vector<char> b (a.begin(),a.end());
 
 	sc::vector<char>::iterator it = a.begin();
 	sc::vector<char>::const_iterator cit = a.cbegin();
 	//*it = 'b';
-	//*cit = 'g';	
-	a.insert(it, {'d','u','l'});
+	//*cit = 'g';
+	a.insert(it, {'u','l'});
 	//a.insert(++it, 'h');
+	auto x = a.begin();
+	std::cout << &x << std::endl;
+	std::cout << &it << std::endl;
 
 	std::cout << "----------------------\n";
 	std::cout << a.capacity() << std::endl;
