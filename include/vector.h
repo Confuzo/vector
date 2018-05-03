@@ -8,6 +8,7 @@
 
 namespace sc{
 	template <typename T>
+	/**@title Classe vector, comporta todas as funções que podem ser usadas e demais classes de iteradores de tipo abstrato*/
 	class vector{
         
         typedef T value_type;
@@ -18,7 +19,7 @@ namespace sc{
         public:
 
         	const static size_t SIZE = 0;
-
+			/**@title Classe iterator, comporta todas as funções que podem ser usadas por iteradores do tipo do vector*/
             class iterator{
 	            public: //iterator traits
 	                    typedef T*                              pointer;
@@ -26,31 +27,62 @@ namespace sc{
 	                    typedef T                               value_type;
 	                    typedef T&                              reference;
 	                    typedef std::bidirectional_iterator_tag iterator_category;
-	                    //constructor (empty and single value)
+	                   
+					    /**@title Construtor da classe iterator 
+						 * @param (empty and single value)*/
 	                    iterator(pointer ptr=nullptr) : m_ptr(ptr){}
-	                    //destructor
+	                    
+						/**@title Destrutor da classe iterator 
+						 * @param (empty and single value)*/
 	                    ~iterator();
-	                    //copy constructor
+	                    
+						/**@title Construtor cópia da classe iterator 
+						 * @param (const iterator& itr)*/
 	                    iterator(const iterator& itr);
-	                    /// Assign operator
+	                   
+					    /**@title Operador = da classe iterator 
+						 * @param (const iterator& rhs)*/
 	                    iterator& operator=(const iterator& rhs);
-
+						
+						/**@title Operador * da classe iterator 
+						 * @param (const iterator& rhs)
+						 * @return iterator*/
 	                    reference operator *(void) const;
-	                    // ++it
+	            
+						/**@title Operador ++it da classe iterator 
+						 * @param (void)
+						 * @return reference*/
 	                    iterator operator++();
-	                    // it++
+	                    
+						/**@title Operador it++ da classe iterator 
+						 * @param (void)
+						 * @return iterator*/
 	                    iterator operator++(int);
-	                    // --it
+	                    
+						/**@title Operador --it da classe iterator 
+						 * @param (void)*/
 	                    iterator operator--();
-	                    // it--
+	                    
+						/**@title Operador it-- da classe iterator 
+						 * @param (void)
+						 * @return iterator*/
 	                    iterator operator--(int);
-
+						
+						/**<@title Operador == da classe iterator 
+						 * @param (const iterator& rhs)
+						 * @return boolean*/
 	                    bool operator==(const iterator& rhs) const;
+						
+						/**<@title Operador != da classe iterator 
+						 * @param (const iterator& rhs)
+						 * @return boolean*/
 	                    bool operator!=(const iterator& rhs) const;
-	            private:
+	            
+				private:
 	                    pointer m_ptr;
 
    			 };
+			/**@title Classe const iterator, comporta todas as funções que podem ser usadas por iteradores constantes do tipo do vector*/
 			class const_iterator{
 	            public:
 	                typedef const T*                              pointer;
@@ -59,26 +91,57 @@ namespace sc{
 	                typedef const T&                              reference;
 	                typedef const std::bidirectional_iterator_tag iterator_category;
 
-	                //constructor (empty and single value)
+	                
+					/**@title Construtor da classe const_iterator 
+					 * @param (empty and single value)*/
 	                const_iterator(pointer ptr=nullptr) : m_ptr(ptr){}
-	                //destructor
+	                
+					/**@title Destrutor da classe const_iterator 
+					 * @param (empty and single value)*/
 	                ~const_iterator();
-	                //copy constructor
+	                
+					 /**@title Construtor cópia da classe const_iterator 
+					  * @param (const iterator& itr)*/
 	                const_iterator(const const_iterator& itr);
-	                /// Assign operator
+	                
+					/**@title Operador = da classe const_iterator 
+					  *@param (const iterator& rhs)
+					  *@return const_iterator*/
 	                const_iterator& operator=(const const_iterator& rhs);
-
+					
+					/**@title Operador * da classe const_iterator 
+					  *@param (void)
+					  *@return const_iterator*/
 	                reference operator *(void) const;
-	                // ++it
+	                
+					/**@title Operador ++it da classe const_iterator 
+					 *@param (void)
+					 *@return reference*/
 	                const_iterator operator++();
-	                // it++
+	                
+					/**@title Operador it++ da classe const_iterator 
+					 *@param (void)
+					 *@return const_iterator*/
 	                const_iterator operator++(int);
-	                // --it
+	               
+					/**@title Operador --it da classe const_iterator 
+					 *@param (void)
+					 *@return const_iterator*/
 	                const_iterator operator--();
-	                // it--
+
+					/**@title Operador it-- da classe const_iterator 
+					 *@param (void)
+					 *@return const_iterator*/
 	                const_iterator operator--(int);
 
+					/**@title Operador == da classe const_iterator 
+					 *@param (const iterator& rhs)
+					 *@return boolean*/
 	                bool operator==(const const_iterator& rhs) const;
+					
+					/**@title Operador != da classe const_iterator 
+					 *@param (const iterator& rhs)
+					 **@return boolean*/
 	                bool operator!=(const const_iterator& rhs) const;
 
 	            private: 
@@ -86,45 +149,77 @@ namespace sc{
 
     		};
 			//CONSTRUTORES E DESTRUTORES
-			/*Parâmetros
-				count - o tamanho da lista.
-				valor - o valor para inicializar a lista com.
-				fist, last - o intervalo para copiar os elementos de.
-				other - outra lista a ser usada como fonte para inicializar os elementos da lista com.
-				ilist - lista inicializadora para inicializar os elementos da lista com.*/
 
-			//1- Construtor Default que cria uma lista vazia.
+			/**@title Construtor Default que cria um vetor vazio.*/
 			vector(void);
-			//2- Constrói a lista com instâncias inseridas por padrão de T.
+			
+			/**@title Constrói o vetor com instâncias inseridas por padrão de T. 
+			 * @param size_type count - o tamanho do vetor.
+			*/
 			vector(size_type count);
-			//3- Constrói a lista com o conteúdo do intervalo [first, last].
+			
+			/**@title Constrói o vetor com o conteúdo do intervalo [first, last].*/
 			template< typename InputIt >
 			vector( InputIt first, InputIt last );
-			//4- Construtor de cópia. Constrói a lista com a cópia profunda do conteúdo de outra.
+			
+			/**@title Construtor de cópia. Constrói o vetor com a cópia profunda do conteúdo de outro.
+			 * @param const vector& other - vetor cópia.
+			*/
 			vector(const vector& other );
-			//5- Constrói a lista com o conteúdo da lista inicializadora init.
+			
+			/**@title Constrói o vetor com o conteúdo da lista inicializadora init.
+			 * @param const std::initializer_list<T> il - lista inicializadora para inicializar os elementos da lista com.
+			*/ 
 			vector(const std::initializer_list<T> il );
-			//6- Destrói a lista. Os destruidores dos elementos são chamados e o armazenamento usado é desalocado.
+			
+			/**@title Destrói o vetor. O destrutor é chamado e o armazenamento usado é desalocado.*/
 			//Note que se os elementos forem ponteiros, os objetos apontados não serão destruídos
 			~vector(void);
 
-			/*7- Copiar operador de atribuição. Substitui o conteúdo por uma cópia do conteúdo de outro. (isto é
-			os dados em outro são movidos de outro para este contêiner). outro está em um válido, mas
-			estado não especificado depois*/
+			/**@title Operador = (de atribuição) da classe vector, receber um outro vector 
+			 * @param const vector& other
+			*/
 			vector& operator=( const vector& other );
-			//8- Substitui o conteúdo por aqueles identificados pela lista de inicializadores ilist.
+			
+			/**@title Operador = (de atribuição) da classe vector, receber uma lista inicializadora 
+			 * @param std::initializer_list<T> ilist
+			*/
 			vector& operator=( std::initializer_list<T> ilist );
 
+			/**@title Operador [] (indexação) da classe vector, receber uma posição index to tipo size_type
+			 * @param size_type pos
+			 * @return retorna uma referencia reference
+			*/
 			reference operator[](size_type pos);
 
+			/**@title Função at (indexação) da classe vector, receber uma posição index to tipo size_type
+			 * @param size_type pos
+			 * @return retorna uma referencia reference
+			*/
 			reference at(size_type pos);
 
+			/**@title função size da classe vector, retorna o tamanho size do vetor
+			 * @param void
+			 * @return size_type size do vetor
+			*/
 			size_type size(void) const;
 
+			/**@title função empty da classe vector, retorna verdadeiro se o vetor estiver vazio e falso se não vazio
+			 * @param void
+			 * @return boolean
+			*/
 			bool empty(void) const;
-
+			
+			/**@title função clear da classe vector, limpa o vetor, mas não o desaloca da memoria
+			 * @param void
+			 * @return viod
+			*/
 			void clear() ;
-
+			
+			/**@title função reserve da classe vector, reserva pra um vetor já alocado o tamanho new_cap passado por parametro
+			 * @param size_type new_cap
+			 * @return void
+			*/
 			void reserve (size_type new_cap) ;
 
 			void push_front(const T & value);
