@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.14"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>My Project: Introduction</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">My Project
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.8.14 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Localizar');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Localizar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Introduction </div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p>This project implements <code><a class="el" href="classsc_1_1vector.html">sc::vector</a></code>, a <code>std::vector</code> custom implementation.</p>
+<p>The project was implemeted in a Programming class at federal University of Rio Grande do Norte.</p>
+<h1>Supported Operations</h1>
+<p>The array data structure supports insertion at any location, and recovery of information also at any location. All operations are described below.</p>
+<h1>Commom operations</h1>
+<ul>
+<li><code>size_type size() const</code> : return the number of elements in the container.</li>
+<li><code>void clear()</code> : remove (either logically or physically) all elements from the container.</li>
+<li><code>bool empty()</code> : returns true if the container contains no elements, and false otherwise.</li>
+<li><code>void push_front( const T &amp; value )</code> : adds value to the front of the list.</li>
+<li><code>void push_back( const T &amp; value )</code> : adds value to the end of the list.</li>
+<li><code>void pop_back()</code> : removes the object at the end of the list.</li>
+<li><code>void pop_front()</code> : removes the object at the front of the list.</li>
+<li><code>const T &amp; back() const</code> : returns the object at the end of the list.</li>
+<li><code>const T &amp; front() const</code> : returns the object at the beginning of the list.</li>
+<li><code>void assign( const T &amp; value )</code> : replaces the content of the list with copies of value <code>value</code> .</li>
+</ul>
+<h1>Operations exclusive to dynamic array implementation</h1>
+<ul>
+<li><code>T &amp; operator[]( size_type pos)</code> : returns the object at the index pos in the array, with no bounds-checking.</li>
+<li><code>T &amp; at ( size_type pos )</code> : returns the object at the index pos in the array, with bounds-checking. If pos is not within the range of the list, an exception of type <code>std::out_of_range</code> is thrown.</li>
+<li><code>size_type capacity() const</code> : return the internal storage capacity of the array.</li>
+<li><code>void reserve( size_type new_cap )</code> : increase the storage capacity of the array to a value that’s is greater or equal to <code>new_cap</code> . If <code>new_cap</code> is greater than the current <code>capacity()</code> , new storage is allocated, otherwise the method does nothing. If new_cap is greater than the current capacity, all iterators and references, including the past-the-end <code>iterator/index</code>, are invalidated. Otherwise, no iterators or references are invalidated. This function also preserve the data elements already stored in the list, as well as their original order.</li>
+<li><code>shrink_to_fit()</code> : Requests the removal of unused capacity. It is a non-binding request to reduce capacity() to size() .</li>
+</ul>
+<h1>Operator overloading</h1>
+<ul>
+<li><code>bool operator==( const vector&amp; lhs, const vector&amp; rhs )</code> : Checks if the contents of lhs and rhs are equal, that is, whether <code>lhs.size() == rhs.size()</code> and each element in lhs compares equal with the element in <code>rhs</code> at the same position.</li>
+<li><code>bool operator!=( const vector&amp; lhs, const vector&amp; rhs)</code> : Similar to the previous operator, but the opposite result.</li>
+</ul>
+<h1>Getting Iterator</h1>
+<ul>
+<li><code>iterator begin()</code> : returns an <code>iterator</code> pointing to the first item in the list.</li>
+<li><code>const_iterator cbegin() const</code> : returns a <code>constant iterator</code> pointing to the first item in the list.</li>
+<li><code>iterator end()</code> : returns an <code>iterator</code> pointing to the end mark in the list, i.e. the position just after the last element of the list.</li>
+<li><code>const_iterator cend() const</code> : returns a <code>constant iterator</code> pointing to the end mark in the list, i.e. the position just after the last element of the list.</li>
+</ul>
+<h1>Iterator operations</h1>
+<ul>
+<li><code>operator++()</code> : advances <code>iterator</code> to the next location within the list. We should provide both prefix and posfix form, or <code>++it</code> and <code>it++</code> .</li>
+<li><code>operator*()</code> as in <code>*it</code> : return a reference to the object located at the position pointed by the <code>iterator</code>.</li>
+<li><code>operator==()</code> as in it1 == it2 : returns true if both <code>iterators</code> refer to the same location within the list, and false otherwise.</li>
+<li><code>operator!=()</code> as in it1 != it2 : returns true if both <code>iterators</code> refer to a different location within the list, and false otherwise.</li>
+</ul>
+<h1>List container operations that require iterators</h1>
+<ul>
+<li><code>iterator insert( iterator pos, const T &amp; value )</code> : adds value into the list before the position given by the <code>iterator pos</code> . The method returns an <code>iterator</code> to the position of the inserted item.</li>
+<li><code>template &lt; typename InItr&gt; iterator insert( iterator pos, InItr first, InItr last )</code> : inserts ele- ments from the range <code>[first; last)</code> before <code>pos</code> .</li>
+<li><code>iterator insert( const_iterator pos, std::initializer_list&lt;T&gt; ilist )</code> : inserts elements from the <code>initializer list ilist</code> before <code>pos</code><code>. Initializer list supports the user of insert as in</code>myList.insert( pos, {'a', 'b', 'c', 'd'} )<code>, which would insert the ele- ments a, b, c, and d in the list before</code>pos<code>, assuming that</code>myList<code>is a list of</code>char<code>. -</code>iterator erase( iterator pos )<code>: removes the object at position</code>pos<code>. The method returns an</code>iterator<code>to the element that follows pos before the call. -</code>iterator erase( iterator first, iterator last )<code>: removes elements in the range</code>[first; last)<code>. The entire list may be erased by calling</code>a.erase(a.begin(), a.end());<code> -</code>void assign( size_type count, const T&amp; value )<code>: Replaces the contents with</code>count<code>copies of value</code>value<code>. -</code> template &lt; typename InItr&gt; void assign( InItr first, InItr last )<code>: replaces the contents of the list with copies of the elements in the range</code>[first; last)<code>. -</code> void assign( std::initializer_list&lt;T&gt; ilist )<code>: replaces the contents of the list with the elements from the</code>initializer list ilist<code>. We may call, for instance,</code>myList.assign( {'a', 'b', 'c', 'd'} )<code>, to replace the elements of the list with the elements a, b, c, and d, assuming that</code>myList<code>is a list of</code>char` .</li>
+</ul>
+<h1>How to run</h1>
+<p>If you using a linux based system, only type <code>make</code> at your project folder to generate the executable file.</p>
+<p>The code was organized in several folders, such as:</p><ul>
+<li>src (for .cpp files),</li>
+<li>include (for header files .h, and .inl), and</li>
+<li>bin (for .o and executable files)</li>
+</ul>
+<h1>Usage</h1>
+<p>A simple example is demonstred below.</p>
+<p>For more details access <a href="http://en.cppreference.com/w/cpp/container/vector">online reference</a></p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;../include/vector.h&quot;</span></div><div class="line"><span class="keywordtype">int</span> <a class="code" href="driver__vector_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(){</div><div class="line">    <a class="code" href="classsc_1_1vector.html">sc::vector&lt;char&gt;</a> a = {<span class="charliteral">&#39;c&#39;</span>, <span class="charliteral">&#39;s&#39;</span>,<span class="charliteral">&#39;a&#39;</span>,<span class="charliteral">&#39;b&#39;</span>};</div><div class="line"></div><div class="line">    <a class="code" href="classsc_1_1vector_1_1iterator.html">sc::vector&lt;char&gt;::iterator</a> it = a.<a class="code" href="classsc_1_1vector.html#ae198130cd01e8d5a4df07d6567b51eb4">begin</a>();</div><div class="line"></div><div class="line">    a.<a class="code" href="classsc_1_1vector.html#ac55608c5cee9a8311cbe7c4fde998a9f">insert</a>(it, {<span class="charliteral">&#39;u&#39;</span>,<span class="charliteral">&#39;l&#39;</span>});</div><div class="line"></div><div class="line">    std::cout &lt;&lt; a.<a class="code" href="classsc_1_1vector.html#acf5f0cebfb797dac6eb42523d1e7511a">capacity</a>() &lt;&lt; std::endl;</div><div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;----------------------\n&quot;</span>;</div><div class="line"></div><div class="line">    <span class="keywordflow">for</span>(; it!=a.<a class="code" href="classsc_1_1vector.html#a15b7f4313d7a011694d154c030768ad3">end</a>(); it++){</div><div class="line">            std::cout &lt;&lt; *it &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keywordflow">return</span> 0;</div><div class="line">}</div></div><!-- fragment --><h1>Authorship</h1>
+<p>Program developed by Abraão Dantas(<a href="#" onclick="location.href='mai'+'lto:'+'abr'+'aa'+'ovl'+'d@'+'gma'+'il'+'.co'+'m'; return false;">abraa<span style="display: none;">.nosp@m.</span>ovld<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a>) and Geraldo Júnior(<a href="#" onclick="location.href='mai'+'lto:'+'ger'+'al'+'doj'+'rc'+'g@g'+'ma'+'il.'+'co'+'m'; return false;">geral<span style="display: none;">.nosp@m.</span>dojr<span style="display: none;">.nosp@m.</span>cg@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>)</p>
+<p>&copy; IMD/UFRN 2018-2019. </p>
+</div></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.14
+</small></address>
+</body>
+</html>

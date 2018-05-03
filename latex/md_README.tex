@@ -1,0 +1,116 @@
+This project implements {\ttfamily \mbox{\hyperlink{classsc_1_1vector}{sc\+::vector}}}, a {\ttfamily std\+::vector} custom implementation.
+
+The project was implemeted in a Programming class at federal University of Rio Grande do Norte.
+
+\section*{Supported Operations}
+
+The array data structure supports insertion at any location, and recovery of information also at any location. All operations are described below.
+
+\section*{Commom operations}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily size\+\_\+type size() const} \+: return the number of elements in the container.
+\item {\ttfamily void clear()} \+: remove (either logically or physically) all elements from the container.
+\item {\ttfamily bool empty()} \+: returns true if the container contains no elements, and false otherwise.
+\item {\ttfamily void push\+\_\+front( const T \& value )} \+: adds value to the front of the list.
+\item {\ttfamily void push\+\_\+back( const T \& value )} \+: adds value to the end of the list.
+\item {\ttfamily void pop\+\_\+back()} \+: removes the object at the end of the list.
+\item {\ttfamily void pop\+\_\+front()} \+: removes the object at the front of the list.
+\item {\ttfamily const T \& back() const} \+: returns the object at the end of the list.
+\item {\ttfamily const T \& front() const} \+: returns the object at the beginning of the list.
+\item {\ttfamily void assign( const T \& value )} \+: replaces the content of the list with copies of value {\ttfamily value} .
+\end{DoxyItemize}
+
+\section*{Operations exclusive to dynamic array implementation}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily T \& operator\mbox{[}$\,$\mbox{]}( size\+\_\+type pos)} \+: returns the object at the index pos in the array, with no bounds-\/checking.
+\item {\ttfamily T \& at ( size\+\_\+type pos )} \+: returns the object at the index pos in the array, with bounds-\/checking. If pos is not within the range of the list, an exception of type {\ttfamily std\+::out\+\_\+of\+\_\+range} is thrown.
+\item {\ttfamily size\+\_\+type capacity() const} \+: return the internal storage capacity of the array.
+\item {\ttfamily void reserve( size\+\_\+type new\+\_\+cap )} \+: increase the storage capacity of the array to a value that’s is greater or equal to {\ttfamily new\+\_\+cap} . If {\ttfamily new\+\_\+cap} is greater than the current {\ttfamily capacity()} , new storage is allocated, otherwise the method does nothing. If new\+\_\+cap is greater than the current capacity, all iterators and references, including the past-\/the-\/end {\ttfamily iterator/index}, are invalidated. Otherwise, no iterators or references are invalidated. This function also preserve the data elements already stored in the list, as well as their original order.
+\item {\ttfamily shrink\+\_\+to\+\_\+fit()} \+: Requests the removal of unused capacity. It is a non-\/binding request to reduce capacity() to size() .
+\end{DoxyItemize}
+
+\section*{Operator overloading}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily bool operator==( const vector\& lhs, const vector\& rhs )} \+: Checks if the contents of lhs and rhs are equal, that is, whether {\ttfamily lhs.\+size() == rhs.\+size()} and each element in lhs compares equal with the element in {\ttfamily rhs} at the same position.
+\item {\ttfamily bool operator!=( const vector\& lhs, const vector\& rhs)} \+: Similar to the previous operator, but the opposite result.
+\end{DoxyItemize}
+
+\section*{Getting Iterator}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily iterator begin()} \+: returns an {\ttfamily iterator} pointing to the first item in the list.
+\item {\ttfamily const\+\_\+iterator cbegin() const} \+: returns a {\ttfamily constant iterator} pointing to the first item in the list.
+\item {\ttfamily iterator end()} \+: returns an {\ttfamily iterator} pointing to the end mark in the list, i.\+e. the position just after the last element of the list.
+\item {\ttfamily const\+\_\+iterator cend() const} \+: returns a {\ttfamily constant iterator} pointing to the end mark in the list, i.\+e. the position just after the last element of the list.
+\end{DoxyItemize}
+
+\section*{Iterator operations}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily operator++()} \+: advances {\ttfamily iterator} to the next location within the list. We should provide both prefix and posfix form, or {\ttfamily ++it} and {\ttfamily it++} .
+\item {\ttfamily operator$\ast$()} as in {\ttfamily $\ast$it} \+: return a reference to the object located at the position pointed by the {\ttfamily iterator}.
+\item {\ttfamily operator==()} as in it1 == it2 \+: returns true if both {\ttfamily iterators} refer to the same location within the list, and false otherwise.
+\item {\ttfamily operator!=()} as in it1 != it2 \+: returns true if both {\ttfamily iterators} refer to a different location within the list, and false otherwise.
+\end{DoxyItemize}
+
+\section*{List container operations that require iterators}
+
+
+\begin{DoxyItemize}
+\item {\ttfamily iterator insert( iterator pos, const T \& value )} \+: adds value into the list before the position given by the {\ttfamily iterator pos} . The method returns an {\ttfamily iterator} to the position of the inserted item.
+\item {\ttfamily template $<$ typename In\+Itr$>$ iterator insert( iterator pos, In\+Itr first, In\+Itr last )} \+: inserts ele-\/ ments from the range {\ttfamily \mbox{[}first; last)} before {\ttfamily pos} .
+\item {\ttfamily iterator insert( const\+\_\+iterator pos, std\+::initializer\+\_\+list$<$T$>$ ilist )} \+: inserts elements from the {\ttfamily initializer list ilist} before {\ttfamily pos}{\ttfamily . Initializer list supports the user of insert as in}my\+List.\+insert( pos, \{\textquotesingle{}a\textquotesingle{}, \textquotesingle{}b\textquotesingle{}, \textquotesingle{}c\textquotesingle{}, \textquotesingle{}d\textquotesingle{}\} ){\ttfamily , which would insert the ele-\/ ments a, b, c, and d in the list before}pos{\ttfamily , assuming that}my\+List{\ttfamily is a list of}char{\ttfamily . -\/}iterator erase( iterator pos ){\ttfamily \+: removes the object at position}pos{\ttfamily . The method returns an}iterator{\ttfamily to the element that follows pos before the call. -\/}iterator erase( iterator first, iterator last ){\ttfamily \+: removes elements in the range}\mbox{[}first; last){\ttfamily . The entire list may be erased by calling}a.\+erase(a.\+begin(), a.\+end());{\ttfamily  -\/}void assign( size\+\_\+type count, const T\& value ){\ttfamily \+: Replaces the contents with}count{\ttfamily copies of value}value{\ttfamily . -\/} template $<$ typename In\+Itr$>$ void assign( In\+Itr first, In\+Itr last ){\ttfamily \+: replaces the contents of the list with copies of the elements in the range}\mbox{[}first; last){\ttfamily . -\/} void assign( std\+::initializer\+\_\+list$<$\+T$>$ ilist ){\ttfamily \+: replaces the contents of the list with the elements from the}initializer list ilist{\ttfamily . We may call, for instance,}my\+List.\+assign( \{\textquotesingle{}a\textquotesingle{}, \textquotesingle{}b\textquotesingle{}, \textquotesingle{}c\textquotesingle{}, \textquotesingle{}d\textquotesingle{}\} ){\ttfamily , to replace the elements of the list with the elements a, b, c, and d, assuming that}my\+List{\ttfamily is a list of}char\`{} .
+\end{DoxyItemize}
+
+\section*{How to run}
+
+If you using a linux based system, only type {\ttfamily make} at your project folder to generate the executable file.
+
+The code was organized in several folders, such as\+:
+\begin{DoxyItemize}
+\item src (for .cpp files),
+\item include (for header files .h, and .inl), and
+\item bin (for .o and executable files)
+\end{DoxyItemize}
+
+\section*{Usage}
+
+A simple example is demonstred below.
+
+For more details access \href{http://en.cppreference.com/w/cpp/container/vector}{\tt online reference}
+
+
+\begin{DoxyCode}
+\textcolor{preprocessor}{#include "../include/vector.h"}
+\textcolor{keywordtype}{int} \mbox{\hyperlink{driver__vector_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}}()\{
+    \mbox{\hyperlink{classsc_1_1vector}{sc::vector<char>}} a = \{\textcolor{charliteral}{'c'}, \textcolor{charliteral}{'s'},\textcolor{charliteral}{'a'},\textcolor{charliteral}{'b'}\};
+
+    \mbox{\hyperlink{classsc_1_1vector_1_1iterator}{sc::vector<char>::iterator}} it = a.\mbox{\hyperlink{classsc_1_1vector_ae198130cd01e8d5a4df07d6567b51eb4}{begin}}();
+
+    a.\mbox{\hyperlink{classsc_1_1vector_ac55608c5cee9a8311cbe7c4fde998a9f}{insert}}(it, \{\textcolor{charliteral}{'u'},\textcolor{charliteral}{'l'}\});
+
+    std::cout << a.\mbox{\hyperlink{classsc_1_1vector_acf5f0cebfb797dac6eb42523d1e7511a}{capacity}}() << std::endl;
+    std::cout << \textcolor{stringliteral}{"----------------------\(\backslash\)n"};
+
+    \textcolor{keywordflow}{for}(; it!=a.\mbox{\hyperlink{classsc_1_1vector_a15b7f4313d7a011694d154c030768ad3}{end}}(); it++)\{
+            std::cout << *it << \textcolor{stringliteral}{"\(\backslash\)n"};
+    \}
+
+    \textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCode}
+
+
+\section*{Authorship}
+
+Program developed by Abraão Dantas(\href{mailto:abraaovld@gmail.com}{\tt abraaovld@gmail.\+com}) and Geraldo Júnior(\href{mailto:geraldojrcg@gmail.com}{\tt geraldojrcg@gmail.\+com})
+
+\copyright{} I\+M\+D/\+U\+F\+RN 2018-\/2019. 

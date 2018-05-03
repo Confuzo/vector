@@ -222,44 +222,122 @@ namespace sc{
 			*/
 			void reserve (size_type new_cap) ;
 
+			/**@title função push_front da classe vector, insere um elemento na primeira posição do vetor
+			 * @param const T & value
+			 * @return void
+			*/
 			void push_front(const T & value);
 
+			/**@title função push_back da classe vector, insere um elemento na ultima posição do vetor
+			 * @param const T & value
+			 * @return void
+			*/
 			void push_back(const T & value);
 
+			/**@title função pop_back da classe vector, exclui o elemento da ultima posição do vetor
+			 * @param void
+			 * @return void
+			*/
 			void pop_back();
 
+			/**@title função pop_front da classe vector, exclui o elemento da primeira posição do vetor
+			 * @param void
+			 * @return void
+			*/
 			void pop_front();
 
+			/**@title função back da classe vector, retorna o elemento da ultima posição do vetor
+			 * @param void
+			 * @return void
+			*/
 			const T & back() const ;
-
+			
+			/**@title função front da classe vector, retorna o elemento da primeira posição do vetor
+			 * @param void
+			 * @return void
+			*/
 			const T & front() const ;
 
+			/**@title Operador == da classe vector, compara dois vetores e retorna true se eles forem iguais e falso se não
+			 *@param const vector<T>& rhs
+			 *@return boolean*/
 			bool operator==(const vector<T>& rhs);
 
+			/**@title Operador != da classe vector, compara dois vetores e retorna true se eles forem diferentes e falso se não
+			 *@param const vector<T>& rhs
+			 *@return boolean*/
 			bool operator!=(const vector<T>& rhs);
 
+			/**@title função capacity da classe vector, retorna a capacidade total do vetor
+			 *@param void
+			 *@return size_type capacity*/
 			size_type capacity( void ) const;
 
+			/**@title função begin da classe vector, retorna um iterator que aponta para posição inicial do vetor
+			 *@param void
+			 *@return iterator it*/
 			iterator begin(void);
 
+			/**@title função end da classe vector, retorna um iterator que aponta para posição final +1 do vetor
+			 *@param void
+			 *@return iterator it*/
 			iterator end(void);
 
+			/**@title função cbegin da classe vector, retorna um const_iterator que aponta para posição inicial do vetor
+			 *@param void
+			 *@return const_iterator it*/
 			const_iterator cbegin(void) const;
 
+			/**@title função cend da classe vector, retorna um const_iterator que aponta para posição inicial do vetor
+			 *@param void
+			 *@return const_iterator it*/
 			const_iterator cend(void) const;
+
+			/**@title função insert da classe vector, como como parametro um iterator e um valor, e insere o valor na posição anteraior 
+			 * ao apontado pelo iterator e retorna um iterator para o endereço do novo elemento
+			 *@param iterator pos, const T& value
+			 *@return iterator*/
 			iterator insert(iterator pos, const T& value);
 
+			/**@title função insert (com range) da classe vector, como como parametro um iterator e um um range, e insere os valores do range na posição anteraior 
+			 * ao apontado pelo iterator e retorna um iterator para o endereço do primeiro elemento do range
+			 *@param iterator pos, InItr first, InItr last
+			 *@return iterator*/
 			template <typename InItr>
 			iterator insert(iterator pos, InItr first, InItr last);
 
+			/**@title função insert (com list) da classe vector, como como parametro um iterator e uma lista, e insere os valores da lista na posição anteraior 
+			 * ao apontado pelo iterator e retorna um iterator para o endereço do primeiro elemento da lista
+			 *@param iterator pos, std::initializer_list<T> ilist
+			 *@return iterator*/
 			iterator insert(iterator pos, std::initializer_list<T> ilist);
-
+			
+			/**@title função erase da classe vector, como como parametro um iterator, e deleta o valor na posição anteraior 
+			 * ao apontado pelo iterator e retorna um iterator para o endereço do novo elemento da posição
+			 *@param iterator pos
+			 *@return iterator*/
 			iterator erase(iterator pos);
-
+			
+			/**@title função erase (com range) da classe vector, como como parametro um range, e deleta os valores do range 
+			 * e retorna um iterator para o endereço do primeiro elemento do range
+			 *@param iterator first, iterator last
+			 *@return iterator*/
 			iterator erase(iterator first, iterator last);
-
+			
+			/**@title função assign da classe vector, substitui o conteúdo com cópias de contagem do valor 
+			 *@param size_type count, const T & value
+			 *@return void*/
 			void assign(size_type count, const T & value);
 
+			/**@title função assign (com range) da classe vector, substitui o conteúdo da lista por cópias dos elementos no intervalo [primeiro; último). 
+			 *@param InItr first, InItr last
+			 *@return void*/
+			template<typename InItr>
+			void assign( InItr first, InItr last );
+
+			/**@title função assign (com lista) da classe vector, substitui o conteúdo do vetor com os elementos da lista de inicializadores ilist. 
+			 *@param std::initializer_list<T> ilist
+			 *@return void*/
 			void assign(std::initializer_list<T> ilist);
            	
            	private:

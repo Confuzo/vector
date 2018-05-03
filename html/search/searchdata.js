@@ -3,10 +3,11 @@ var indexSectionsWithContent =
   0: "abcdefimoprsv~",
   1: "civ",
   2: "s",
-  3: "dv",
+  3: "drv",
   4: "abcefimoprsv~",
   5: "s",
-  6: "diprv"
+  6: "diprv",
+  7: "i"
 };
 
 var indexSectionNames =
@@ -17,7 +18,8 @@ var indexSectionNames =
   3: "files",
   4: "functions",
   5: "variables",
-  6: "typedefs"
+  6: "typedefs",
+  7: "pages"
 };
 
 var indexSectionLabels =
@@ -28,6 +30,7 @@ var indexSectionLabels =
   3: "Ficheiros",
   4: "Funções",
   5: "Variáveis",
-  6: "Definições de tipos"
+  6: "Definições de tipos",
+  7: "Páginas"
 };
 

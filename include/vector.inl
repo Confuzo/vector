@@ -136,7 +136,6 @@
     template <typename T>
     template< typename InputIt >
     vector<T>::vector( InputIt first, InputIt last ){
-
       int i = 0;
       m_size = 0;
       while(first != last){
@@ -324,9 +323,9 @@
     }
 
     template <typename T>
-    template <typename InItr>
-    typename vector<T>::iterator vector<T>::insert( typename vector<T>::iterator pos, InItr first, InItr last){
-      size_type i = 0;
+     template <typename InItr>
+      typename vector<T>::iterator vector<T>::insert( typename vector<T>::iterator pos, InItr first, InItr last){
+            size_type i = 0;
 			auto ini(first);
 			while(ini != last){
 				i++;
@@ -344,7 +343,7 @@
 				first++;
 			}
 			std::memmove(&m_data[index], new_vector, m_size*sizeof(T));
-      return pos;
+            return pos;
     }
 
     template<typename T>
@@ -363,7 +362,7 @@
         return pos;
     }
     template<typename T>
-    typename vector<T>::iterator vector<T>::erase(iterator pos){
+    typename vector<T>::iterator vector<T>::erase(typename vector<T>::iterator pos){
                 iterator aux = begin();
                 auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
                 value_type new_vector [m_size];
@@ -373,7 +372,7 @@
                 return aux;
             }
     template<typename T>
-    typename vector<T>::iterator vector<T>::erase(iterator first, iterator last){
+    typename vector<T>::iterator vector<T>::erase(typename vector<T>::iterator first, typename vector<T>::iterator last){
         value_type new_vector [m_size];
         auto i = 0;
         auto j = 0;
@@ -391,12 +390,24 @@
         return first;
     }
     template<typename T>
-    void vector<T>::assign(size_type count, const T & value){
+    void vector<T>::assign(typename vector<T>::size_type count, const T & value){
         for (size_type i = 0; i< count; i++){
             m_data[i] = value;
         }
         m_size = count;
     }
+    template<typename T>
+    template <typename InItr>
+	void vector<T>::assign(InItr first, InItr last){
+            auto ini = 0;
+            while(first != last){
+                m_data[ini] = *first;
+                first++;
+                ini++;
+            }
+            m_size = ini;
+	}
+
     template<typename T>
     void vector<T>::assign(std::initializer_list<T> ilist){
         std::copy(ilist.begin(), ilist.end(), &m_data[0]);
