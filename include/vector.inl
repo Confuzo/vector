@@ -2,7 +2,7 @@
 //ITERATOR
         /*template< typename T >
         vector<T>::iterator::iterator(typename vector<T>::iterator::pointer ptr=nullptr) : m_ptr(ptr){
-                
+
         }*/
         //destructor
         template< typename T >
@@ -59,7 +59,7 @@
 //CONST ITERATOR
         /*template< typename T >
         vector<T>::const_iterator::const_iterator(pointer ptr=nullptr) : m_ptr(ptr){
-                
+
         }*/
         //destructor
         template< typename T >
@@ -136,8 +136,16 @@
     template <typename T>
     template< typename InputIt >
     vector<T>::vector( InputIt first, InputIt last ){
-            //dificuldades em implementar
-            
+
+      int i = 0;
+      m_size = 0;
+      while(first != last){
+        m_data[i] = *first;
+        i++;
+        m_size++;
+        first++;
+      }
+
     }
     //4- Construtor de cópia. Constrói a lista com a cópia profunda do conteúdo de outra.
    template <typename T>
@@ -306,7 +314,7 @@
         iterator aux = begin();
         auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
         value_type new_vector [m_size];
-        std::memmove(new_vector, m_data, m_size*sizeof(T));
+        std::memmove(new_vector, m_data[index], m_size*sizeof(T));
         if(index < m_size){
             m_data[index] = value;
         }
@@ -318,6 +326,25 @@
     template <typename T>
     template <typename InItr>
     typename vector<T>::iterator vector<T>::insert( typename vector<T>::iterator pos, InItr first, InItr last){
+      size_type i = 0;
+			auto ini(first);
+			while(ini != last){
+				i++;
+				ini++;
+			}
+			auto new_cap = i + m_size;
+			reserve(new_cap);
+			iterator aux = begin();
+			auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
+			value_type new_vector [m_size];
+			std::memmove(new_vector, &m_data[index], m_size*sizeof(T));
+			while(first != last){
+				m_data[index] = *first;
+				index++;
+				first++;
+			}
+			std::memmove(&m_data[index], new_vector, m_size*sizeof(T));
+      return pos;
     }
 
     template<typename T>
