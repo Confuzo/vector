@@ -342,7 +342,7 @@ namespace sc{
            	
            	private:
 				size_type m_size; //!< Stores the array size.
-      			value_type m_data[ SIZE ]; //the storage area
+      			value_type * m_data; //the storage area
 				size_type m_capacity;
 		};
 	#include "vector.inl"

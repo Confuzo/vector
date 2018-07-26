@@ -124,8 +124,10 @@
 
     //1- Construtor Default que cria uma lista vazia.
     template <typename T>
-    vector<T>::vector(void): m_size(SIZE){
-        /*empty*/
+    vector<T>::vector(void){
+        m_data = new T[SIZE];
+        m_size = 0;
+        m_capacity = SIZE;
     }
     //2- Constrói a lista com instâncias inseridas por padrão de T.
     template <typename T>
@@ -161,7 +163,9 @@
     //6- Destrói a lista. Os destruidores dos elementos são chamados e o armazenamento usado é desalocado.
     //Note que se os elementos forem ponteiros, os objetos apontados não serão destruídos
    template <typename T>
-    vector<T>::~vector(void) = default;
+    vector<T>::~vector(void){
+        delete [] m_data;
+    }
 
     /*7- Copiar operador de atribuição. Substitui o conteúdo por uma cópia do conteúdo de outro. (isto é
     os dados em outro são movidos de outro para este contêiner). outro está em um válido, mas
