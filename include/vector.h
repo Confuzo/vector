@@ -6,6 +6,7 @@
 #include <initializer_list>
 #include <cstring>
 #include <cstddef>
+#include <iterator>
 
 namespace sc{
 	template <typename T>
@@ -63,7 +64,7 @@ namespace sc{
 						/**@title Operador de diferença entre iteradores da classe iterator 
 						 * @param (const iterator)
 						 * @return reference*/
-						int operator-(iterator & rhs);
+						difference_type operator-( const iterator & rhs ) const;
 	            
 						/**@title Operador ++it da classe iterator 
 						 * @param (void)

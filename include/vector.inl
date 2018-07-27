@@ -2,20 +2,20 @@
 //ITERATOR
         template< typename T >
         vector<T>::iterator::iterator(vector<T>::iterator::pointer ptr){
-            m_ptr = ptr;
+            this->m_ptr = ptr;
         }
         //destructor
         template< typename T >
         vector<T>::iterator::~iterator() = default;
         //copy constructor
         template< typename T >
-        vector<T>::iterator::iterator(const typename vector<T>::iterator::iterator& itr) : m_ptr(itr.m_ptr){
-                /*empty*/
+        vector<T>::iterator::iterator(const typename vector<T>::iterator::iterator& itr){
+                this->m_ptr = itr.m_ptr;
         }
         /// Assign operator
         template< typename T >
         typename vector<T>::iterator & vector<T>::iterator::operator=(const iterator& rhs){
-                m_ptr = rhs.m_ptr;
+                this->m_ptr = rhs.m_ptr;
         }
 
         template< typename T >
@@ -32,15 +32,16 @@
         typename vector<T>::iterator vector<T>::iterator::operator-(int value){
                 return vector<T>::iterator(this->m_ptr - value);
         }
-        //difference_type
-        template < typename T >
-        int vector<T>::iterator::operator-(vector<T>::iterator & rhs) {
-            return int(this->m_ptr - rhs.m_ptr);
+        //difference between iterators
+        template< typename T >
+        typename vector<T>::iterator::difference_type vector<T>::iterator::operator-(const iterator & rhs) const{
+                return vector<T>::iterator::difference_type(this->m_ptr - rhs.m_ptr);
         }
         // ++it
         template< typename T >
         typename vector<T>::iterator vector<T>::iterator::operator++(){
-                return ++m_ptr;
+                ++this->m_ptr;
+                return *this;
         }
         // it++
         template< typename T >
@@ -52,7 +53,8 @@
         // --it
         template< typename T >
         typename vector<T>::iterator vector<T>::iterator::operator--(){
-                return --m_ptr;
+                --m_ptr;
+                return *m_ptr;
         }
         // it--
         template< typename T >
@@ -127,6 +129,25 @@
         bool vector<T>::const_iterator:: operator!=(const const_iterator& rhs) const{
         return m_ptr != rhs.m_ptr;
         }
+//ITERATOR SPECIAL METHODS
+    template <typename T>
+    typename vector<T>::iterator vector<T>::begin(void){
+            return iterator(m_data);
+    }
+    template <typename T>
+    typename vector<T>::iterator vector<T>::end(void){
+            return iterator(m_data+ m_size);
+    }
+
+    template <typename T>
+    typename vector<T>::const_iterator vector<T>::cbegin(void) const{
+        return const_iterator(m_data);
+    }
+
+    template <typename T>
+    typename vector<T>::const_iterator vector<T>::cend(void) const{
+        return const_iterator(m_data + m_size);
+    }
 
 //VECTOR
 //CONSTRUTORES E DESTRUTORES
@@ -155,9 +176,9 @@
     template <typename T>
     template< typename InputIt >
     vector<T>::vector( InputIt first, InputIt last ){
-        size_t dif = last - first;
-        std::cout << "Rodou aq  " << dif << std::endl;
         //assign(first,last);
+        auto dif = last - first;
+        std::cout<< "Testando: " << dif << std::endl;
     }
     //4- Construtor de cópia. Constrói a lista com a cópia profunda do conteúdo de outra.
    template <typename T>
@@ -173,6 +194,8 @@
         m_data[0] = 1;
         m_data[1] = 2;
         m_data[2] = 3;
+        m_size = 3;
+        m_capacity = 3;
         //assign(il);
     }
     //6- Destrói a lista. Os destruidores dos elementos são chamados e o armazenamento usado é desalocado.
@@ -307,24 +330,6 @@
         return std::distance(&m_data[0],&m_data[m_size]);
     }
 
-    template <typename T>
-    typename vector<T>::iterator vector<T>::begin(void){
-            return iterator(m_data);
-    }
-    template <typename T>
-    typename vector<T>::iterator vector<T>::end(void){
-            return iterator(&m_data[m_size]);
-    }
-
-    template <typename T>
-    typename vector<T>::const_iterator vector<T>::cbegin(void) const{
-        return const_iterator(&m_data[0]);
-    }
-
-    template <typename T>
-    typename vector<T>::const_iterator vector<T>::cend(void) const{
-        return const_iterator(&m_data[m_size]);
-    }
     template <typename T>
     typename vector<T>::iterator vector<T>::insert(typename vector<T>::iterator pos, const T& value){
         auto i = m_size+1;
