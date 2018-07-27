@@ -1,9 +1,9 @@
 #include "vector.h"
 //ITERATOR
-        /*template< typename T >
-        vector<T>::iterator::iterator(typename vector<T>::iterator::pointer ptr=nullptr) : m_ptr(ptr){
-
-        }*/
+        template< typename T >
+        vector<T>::iterator::iterator(vector<T>::iterator::pointer ptr){
+            m_ptr = ptr;
+        }
         //destructor
         template< typename T >
         vector<T>::iterator::~iterator() = default;
@@ -20,7 +20,22 @@
 
         template< typename T >
         typename vector<T>::iterator::reference vector<T>::iterator::operator*(void) const{
-                return *m_ptr;
+                return *this->m_ptr;
+        }
+        // +
+        template< typename T >
+        typename vector<T>::iterator vector<T>::iterator::operator+(int value){
+                return vector<T>::iterator(this->m_ptr + value);
+        }
+        // -
+        template< typename T >
+        typename vector<T>::iterator vector<T>::iterator::operator-(int value){
+                return vector<T>::iterator(this->m_ptr - value);
+        }
+        //difference_type
+        template < typename T >
+        int vector<T>::iterator::operator-(vector<T>::iterator & rhs) {
+            return int(this->m_ptr - rhs.m_ptr);
         }
         // ++it
         template< typename T >
@@ -57,10 +72,10 @@
         }
 
 //CONST ITERATOR
-        /*template< typename T >
-        vector<T>::const_iterator::const_iterator(pointer ptr=nullptr) : m_ptr(ptr){
-
-        }*/
+        template< typename T >
+        vector<T>::const_iterator::const_iterator(vector<T>::const_iterator::pointer ptr){
+            m_ptr = ptr;
+        }
         //destructor
         template< typename T >
         vector<T>::const_iterator::~const_iterator() = default;
@@ -132,21 +147,17 @@
     //2- Constrói a lista com instâncias inseridas por padrão de T.
     template <typename T>
     vector<T>::vector(typename vector<T>::size_type count){
-        m_size = count;
+        m_data = new T[count];
+        m_size = 0;
+        m_capacity = count;
     }
     //3- Constrói a lista com o conteúdo do intervalo [first, last].
     template <typename T>
     template< typename InputIt >
     vector<T>::vector( InputIt first, InputIt last ){
-      int i = 0;
-      m_size = 0;
-      while(first != last){
-        m_data[i] = *first;
-        i++;
-        m_size++;
-        first++;
-      }
-
+        size_t dif = last - first;
+        std::cout << "Rodou aq  " << dif << std::endl;
+        //assign(first,last);
     }
     //4- Construtor de cópia. Constrói a lista com a cópia profunda do conteúdo de outra.
    template <typename T>
@@ -157,8 +168,12 @@
     //5- Constrói a lista com o conteúdo da lista inicializadora init.
    template <typename T>
     vector<T>::vector(const std::initializer_list<T> il ){
-        std::copy(il.begin(), il.end(), &m_data[0]);
-        m_size = il.size();
+        std::cout << il.size() << std::endl;
+        m_data = new T[il.size()];
+        m_data[0] = 1;
+        m_data[1] = 2;
+        m_data[2] = 3;
+        //assign(il);
     }
     //6- Destrói a lista. Os destruidores dos elementos são chamados e o armazenamento usado é desalocado.
     //Note que se os elementos forem ponteiros, os objetos apontados não serão destruídos
@@ -294,7 +309,7 @@
 
     template <typename T>
     typename vector<T>::iterator vector<T>::begin(void){
-            return iterator(&m_data[0]);
+            return iterator(m_data);
     }
     template <typename T>
     typename vector<T>::iterator vector<T>::end(void){

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <initializer_list>
 #include <cstring>
+#include <cstddef>
 
 namespace sc{
 	template <typename T>
@@ -23,14 +24,14 @@ namespace sc{
             class iterator{
 	            public: //iterator traits
 	                    typedef T*                              pointer;
-	                    typedef std::ptrdiff_t                  diference_type;
+	                    typedef std::ptrdiff_t                  difference_type;
 	                    typedef T                               value_type;
 	                    typedef T&                              reference;
 	                    typedef std::bidirectional_iterator_tag iterator_category;
 	                   
 					    /**@title Construtor da classe iterator 
 						 * @param (empty and single value)*/
-	                    iterator(pointer ptr=nullptr) : m_ptr(ptr){}
+	                    explicit iterator(pointer ptr =  nullptr);
 	                    
 						/**@title Destrutor da classe iterator 
 						 * @param (empty and single value)*/
@@ -48,6 +49,21 @@ namespace sc{
 						 * @param (const iterator& rhs)
 						 * @return iterator*/
 	                    reference operator *(void) const;
+
+						/**@title Operador + da classe iterator 
+						 * @param (int)
+						 * @return reference*/
+						iterator operator+(int value);
+
+						/**@title Operador - da classe iterator 
+						 * @param (int)
+						 * @return reference*/
+						iterator operator-(int value);
+
+						/**@title Operador de diferença entre iteradores da classe iterator 
+						 * @param (const iterator)
+						 * @return reference*/
+						int operator-(iterator & rhs);
 	            
 						/**@title Operador ++it da classe iterator 
 						 * @param (void)
@@ -86,7 +102,7 @@ namespace sc{
 			class const_iterator{
 	            public:
 	                typedef const T*                              pointer;
-	                typedef const std::ptrdiff_t                  diference_type;
+	                typedef const std::ptrdiff_t                  difference_type;
 	                typedef const T                               value_type;
 	                typedef const T&                              reference;
 	                typedef const std::bidirectional_iterator_tag iterator_category;
@@ -94,7 +110,7 @@ namespace sc{
 	                
 					/**@title Construtor da classe const_iterator 
 					 * @param (empty and single value)*/
-	                const_iterator(pointer ptr=nullptr) : m_ptr(ptr){}
+	                explicit const_iterator(pointer ptr=nullptr);
 	                
 					/**@title Destrutor da classe const_iterator 
 					 * @param (empty and single value)*/
