@@ -176,27 +176,25 @@
     template <typename T>
     template< typename InputIt >
     vector<T>::vector( InputIt first, InputIt last ){
-        //assign(first,last);
-        auto dif = last - first;
-        std::cout<< "Testando: " << dif << std::endl;
+        assign(first,last);
     }
     //4- Construtor de cópia. Constrói a lista com a cópia profunda do conteúdo de outra.
    template <typename T>
     vector<T>::vector(const vector& other ){
-        m_size = other.m_size;
-        std::copy(&other.m_data[0], &other.m_data[m_size], &m_data[0]);
+        /*m_size = other.m_size;
+        std::copy(&other.m_data[0], &other.m_data[m_size], &m_data[0]);*/
+        assign(other.begin(), other.end());
     }
     //5- Constrói a lista com o conteúdo da lista inicializadora init.
    template <typename T>
     vector<T>::vector(const std::initializer_list<T> il ){
-        std::cout << il.size() << std::endl;
         m_data = new T[il.size()];
-        m_data[0] = 1;
-        m_data[1] = 2;
-        m_data[2] = 3;
+        m_data[0]= 1;
+        m_data[1]= 2;
+        m_data[2]= 3;
         m_size = 3;
         m_capacity = 3;
-        //assign(il);
+        //assign(il.begin(), il.end());
     }
     //6- Destrói a lista. Os destruidores dos elementos são chamados e o armazenamento usado é desalocado.
     //Note que se os elementos forem ponteiros, os objetos apontados não serão destruídos
@@ -210,24 +208,24 @@
     estado não especificado depois*/
     template <typename T>
     vector<T> & vector<T>::operator=( const vector& other ){
-        m_size = other.m_size;
-        std::copy(&other.m_data[0], &other.m_data[m_size], &m_data);
+        assign(other.begin(), other.end());
     }
     //8- Substitui o conteúdo por aqueles identificados pela lista de inicializadores ilist.
     template <typename T>
     vector<T> & vector<T>::operator=( std::initializer_list<T> ilist ){
-        std::copy(ilist.begin(), ilist.end(), &m_data[0]);
-        m_size = ilist.size();
+        assign(ilist.begin(), ilist.end());
     }
 
     template <typename T>
     typename vector<T>::reference vector<T>::operator[](size_type pos){
+        if( pos < 0 or pos >= m_capacity)
+                    throw std::out_of_range("[array::[]] Acesso fora dos limites do vetor");
         return m_data[pos];
     }
 
     template <typename T>
     typename vector<T>::reference vector<T>::at(size_type pos){
-            if( pos < 0 or pos >= m_size)
+            if( pos < 0 or pos >= m_capacity)
                     throw std::out_of_range("[array::at()] Acesso fora dos limites do vetor");
             return m_data[pos];
     }
@@ -244,61 +242,57 @@
 
     template <typename T>
     void vector<T>::clear() {
-        size_type i;
-        for(i = 0; i < m_size; i++){
-            m_data[i].~T();
-        }
-
         m_size = 0;
+        m_capacity = 0;
+        delete [] m_data;
     }
 
     template <typename T>
     void vector<T>::reserve (size_type new_cap) {
-        if(new_cap > capacity()){
+        if(new_cap >= capacity()){
+            auto aux = m_size;
             value_type new_vector[new_cap];
             std::memmove(new_vector, m_data, new_cap*sizeof(T));
             clear();
-            m_size = new_cap;
+            m_data = new T[new_cap];
             std::memmove(m_data, new_vector, new_cap*sizeof(T));
+            m_size = aux + 1;
+            m_capacity = new_cap;
         }
     }
 
     template <typename T>
     void vector<T>::push_front(const T & value){
-        auto i = m_size+1;
+        auto i = m_size + 1;
         reserve(i);
         value_type new_vector[m_size];
         std::memmove(new_vector, m_data, m_size*sizeof(T));
-        clear();
-        m_size = i;
         m_data[0] = value;
         std::memmove(&m_data[1], new_vector, m_size*sizeof(T));
     }
 
     template <typename T>
     void vector<T>::push_back(const T & value){
-        auto i = m_size+1;
+        auto i = m_size + 1;
         reserve(i);
-        value_type new_vector[m_size];
-        std::memmove(new_vector, m_data, m_size*sizeof(T));
-        clear();
-        m_size = i;
-        std::memmove(m_data, new_vector, m_size*sizeof(T));
-        m_data[i-1] = value;
+        m_data[m_size - 1] = value;
     }
 
     template <typename T>
     void vector<T>::pop_back(){
-        //m_data[m_size-1].~T();
-        m_size--;
+        if(!empty()){
+            m_size--;
+        }
     }
 
     template <typename T>
     void  vector<T>::pop_front(){
-        value_type new_vector [m_size];
-        std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
-        m_size--;
-        std::memmove(m_data, new_vector, m_size*sizeof(T));
+        if(!empty()){
+            value_type new_vector [m_size];
+            std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
+            m_size--;
+            std::memmove(m_data, new_vector, m_size*sizeof(T));
+        }
     }
 
     template <typename T>
@@ -327,7 +321,7 @@
 
     template <typename T>
     typename vector<T>::size_type vector<T>::capacity( void ) const{
-        return std::distance(&m_data[0],&m_data[m_size]);
+        return m_capacity;
     }
 
     template <typename T>
