@@ -14,5 +14,9 @@ int main(){
 	std::cout << "Capacidade " << a.capacity() << " tamanho "<< a.size()<< std::endl;
 	a.pop_front();
 	std::copy(a.begin(),a.end(),std::ostream_iterator<int>(std::cout,","));
+	std::cout << std::endl;
+	a.insert(a.begin() + 2,5);
+	std::copy(a.begin(),a.end(),std::ostream_iterator<int>(std::cout,","));
+	std::cout << std::endl;
 	return 0;
 }

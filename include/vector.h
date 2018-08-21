@@ -358,7 +358,7 @@ namespace sc{
 			void assign(std::initializer_list<T> ilist);
            	
            	private:
-				size_type m_size; //!< Stores the array size.
+				size_type m_size = SIZE; //!< Stores the array size.
       			value_type * m_data; //the storage area
 				size_type m_capacity;
 		};

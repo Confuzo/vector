@@ -188,13 +188,13 @@
     //5- Constrói a lista com o conteúdo da lista inicializadora init.
    template <typename T>
     vector<T>::vector(const std::initializer_list<T> il ){
-        m_data = new T[il.size()];
+       /* m_data = new T[il.size()];
         m_data[0]= 1;
         m_data[1]= 2;
         m_data[2]= 3;
         m_size = 3;
-        m_capacity = 3;
-        //assign(il.begin(), il.end());
+        m_capacity = 3;*/
+        assign(il.begin(), il.end());
     }
     //6- Destrói a lista. Os destruidores dos elementos são chamados e o armazenamento usado é desalocado.
     //Note que se os elementos forem ponteiros, os objetos apontados não serão destruídos
@@ -218,14 +218,14 @@
 
     template <typename T>
     typename vector<T>::reference vector<T>::operator[](size_type pos){
-        if( pos < 0 or pos >= m_capacity)
+        if( pos < 0 or pos >= m_size)
                     throw std::out_of_range("[array::[]] Acesso fora dos limites do vetor");
         return m_data[pos];
     }
 
     template <typename T>
     typename vector<T>::reference vector<T>::at(size_type pos){
-            if( pos < 0 or pos >= m_capacity)
+            if( pos < 0 or pos >= m_size)
                     throw std::out_of_range("[array::at()] Acesso fora dos limites do vetor");
             return m_data[pos];
     }
@@ -252,10 +252,10 @@
         if(new_cap >= capacity()){
             auto aux = m_size;
             value_type new_vector[new_cap];
-            std::memmove(new_vector, m_data, new_cap*sizeof(T));
+            std::memmove(new_vector, m_data, m_size*sizeof(T));
             clear();
             m_data = new T[new_cap];
-            std::memmove(m_data, new_vector, new_cap*sizeof(T));
+            std::memmove(m_data, new_vector, aux*sizeof(T));
             m_size = aux + 1;
             m_capacity = new_cap;
         }
@@ -266,9 +266,9 @@
         auto i = m_size + 1;
         reserve(i);
         value_type new_vector[m_size];
-        std::memmove(new_vector, m_data, m_size*sizeof(T));
+        std::memmove(new_vector, m_data, (i - 1)*sizeof(T));
         m_data[0] = value;
-        std::memmove(&m_data[1], new_vector, m_size*sizeof(T));
+        std::memmove(&m_data[1], new_vector, (i -1)*sizeof(T));
     }
 
     template <typename T>
@@ -289,19 +289,25 @@
     void  vector<T>::pop_front(){
         if(!empty()){
             value_type new_vector [m_size];
-            std::memmove(new_vector, &m_data[1], m_size*sizeof(T));
+            std::memmove(new_vector, &m_data[1], (m_size-1) * sizeof(T));
             m_size--;
-            std::memmove(m_data, new_vector, m_size*sizeof(T));
+            std::memmove(m_data, new_vector, m_size * sizeof(T));
         }
     }
 
     template <typename T>
     const T & vector<T>:: back() const {
+        if(m_size <= 0){
+            throw std::out_of_range("Empty vector");
+        }
         return m_data[m_size-1];
     }
 
     template <typename T>
     const T & vector<T>::front() const {
+        if(m_size <= 0){
+            throw std::out_of_range("Empty vector");
+        }
         return m_data[0];
     }
 
@@ -326,18 +332,22 @@
 
     template <typename T>
     typename vector<T>::iterator vector<T>::insert(typename vector<T>::iterator pos, const T& value){
-        auto i = m_size+1;
+        auto i = m_size + 1;
+    
         reserve(i);
-        iterator aux = begin();
-        auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
-        value_type new_vector [m_size];
-        std::memmove(new_vector, m_data[index], m_size*sizeof(T));
+        m_data[m_size -1 ] = value;
+        auto aux = end();
+        //std::cout << *(aux -1) << std::endl; 
+        auto index = (aux - pos);
+        /*std::cout << index << std::endl;
+        value_type new_vector [i - 1];
+        std::memmove(new_vector, &m_data[index], (m_size - index)*sizeof(T));
         if(index < m_size){
             m_data[index] = value;
         }
-        std::memmove(&m_data[index+1], new_vector, m_size*sizeof(T));
-
-        return pos;
+        std::memmove(&m_data[index+1], new_vector, (m_size - index)*sizeof(T));
+        std::cout << size() << " " <<  m_size << std::endl;*/
+        return pos + 1;
     }
 
     template <typename T>
@@ -366,18 +376,7 @@
 
     template<typename T>
     typename vector<T>::iterator vector<T>::insert( typename vector<T>::iterator pos, std::initializer_list<T> ilist){
-        auto i = m_size + ilist.size();
-        reserve(i);
-        iterator aux = begin();
-        auto index = (std::distance(&aux, &pos)/m_size*sizeof(T))-3*sizeof(T);
-        value_type new_vector [m_size];
-        std::memmove(new_vector, m_data, m_size*sizeof(T));
-        if(index < m_size){
-            std::copy(ilist.begin(), ilist.end(), &m_data[index]);
-        }
-        std::memmove(&m_data[index+ilist.size()], new_vector, m_size*sizeof(T));
-
-        return pos;
+       insert(pos, ilist.begin(), ilist.end());
     }
     template<typename T>
     typename vector<T>::iterator vector<T>::erase(typename vector<T>::iterator pos){
@@ -412,22 +411,28 @@
         for (size_type i = 0; i< count; i++){
             m_data[i] = value;
         }
+        m_capacity = count;
         m_size = count;
     }
+
     template<typename T>
     template <typename InItr>
 	void vector<T>::assign(InItr first, InItr last){
-            auto ini = 0;
-            while(first != last){
-                m_data[ini] = *first;
-                first++;
-                ini++;
-            }
-            m_size = ini;
+        if(m_size != 0){
+            clear();
+        }
+        auto ini = 0;
+        m_capacity = last - first;
+        m_data = new T[m_capacity];
+        m_size = m_capacity;
+        while(first != last){
+            m_data[ini] = *first;
+            ini++;
+            first++;
+        }
 	}
 
     template<typename T>
     void vector<T>::assign(std::initializer_list<T> ilist){
-        std::copy(ilist.begin(), ilist.end(), &m_data[0]);
-        m_size = ilist.size();
+       assign(ilist.begin(),ilist.end());
     }
